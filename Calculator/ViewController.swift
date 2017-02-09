@@ -12,16 +12,24 @@ class ViewController: UIViewController {
     
     @IBOutlet weak private var display: UILabel!
     
+    @IBOutlet weak private var descriptionOfOperation: UILabel!
+    
     private var userIsInTheMiddleOfTyping = false
     
+    
+    @IBOutlet weak var dotButton: UIButton!
     
     @IBAction private func touchDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         
-        
+        //Prevent 
+        if digit == "." {
+            dotButton.isEnabled = false
+        }
         if userIsInTheMiddleOfTyping && display.text! != "0"{
             let textCurrentlyInDisplay = display.text!
             display.text = textCurrentlyInDisplay + digit
+
         }
         else {
             display.text = digit
@@ -46,6 +54,7 @@ class ViewController: UIViewController {
         if userIsInTheMiddleOfTyping{
             brain.setOperand(operand: displayValue)
             userIsInTheMiddleOfTyping = false
+            dotButton.isEnabled = true
         }
         if let mathmaticalSymbol = sender.currentTitle{
             brain.performOperation(symbol: mathmaticalSymbol)

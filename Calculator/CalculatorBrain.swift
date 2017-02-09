@@ -9,11 +9,17 @@
 import Foundation
 
 
-func multiply(op1: Double, op2: Double) -> Double{
-    return op1*op2
+func factorial(_ op: Double) -> Double{
+
+    return op == 0 ? 1 : op * factorial(op - 1)
 }
+
 class CalculatorBrain{
     private var accumulator = 0.0
+    
+    var description = ""
+    
+    var isPartialResults = false
     
     func setOperand(operand: Double) {
         accumulator = operand
@@ -28,6 +34,7 @@ class CalculatorBrain{
         "tan": Operation.UnaryOperation(tan),
         "x²": Operation.UnaryOperation( { $0*$0 } ),
         "x³": Operation.UnaryOperation( { $0*$0*$0 } ),
+        "x!": Operation.UnaryOperation( factorial ),
         "+": Operation.BinaryOperation( { $0 + $1 } ),
         "-": Operation.BinaryOperation( { $0 - $1 } ),
         "×": Operation.BinaryOperation( { $0 * $1 } ),
@@ -58,6 +65,7 @@ class CalculatorBrain{
                 executePendingOperation()
             case .Cancel:
                 accumulator = 0.0
+                pending = nil
             }
             
         }
